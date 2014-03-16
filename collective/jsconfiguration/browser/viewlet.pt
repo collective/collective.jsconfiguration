@@ -1,0 +1,8 @@
+<tal:jsconfig>
+    <script type="text/collective.jsconfiguration.xml"
+            tal:repeat="data view/dom_data"
+            tal:content="structure data"></script>
+    <script type="text/collective.jsconfiguration.json"
+            tal:repeat="data view/json_data"
+            tal:content="data"></script>
+</tal:jsconfig>
