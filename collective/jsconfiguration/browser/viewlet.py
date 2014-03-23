@@ -27,4 +27,4 @@ class JSConfigurationViewlet(ViewletBase):
         results = []
         for name, provider in dom_providers:
             results.append(provider())
-        results = []
+        return results
