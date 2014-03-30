@@ -23,7 +23,6 @@ class DOMConfiguration(object):
     template = ViewPageTemplateFile('test_dom.pt')
     
     def __init__(self, context, request, view):
-        self.name = u''
         self.context = context
         self.request = request
         self.view = view
@@ -81,14 +80,35 @@ class TestDOM(BaseTestCase):
                                         Interface),
                               provided=IDOMDataProvider,
                               name=u'bar.dom.data')
+        gsm.unregisterAdapter(SpecialDOMConfiguration,
+                              required=(IATDocument,
+                                        IHTTPRequest,
+                                        Interface),
+                              provided=IDOMDataProvider,
+                              name=u'foo.dom.data')
+        gsm.unregisterAdapter(SpecialDOMConfiguration,
+                              required=(IATDocument,
+                                        IHTTPRequest,
+                                        Interface),
+                              provided=IDOMDataProvider,
+                              name=u'bar.dom.data')
+        gsm.unregisterAdapter(DOMConfiguration,
+                              required=(IATDocument,
+                                        IHTTPRequest,
+                                        Interface),
+                              provided=IDOMDataProvider)
 
     def test_configurtion_on_portal(self):
         portal = self.layer['portal']
-        self.assertTrue("""<foo><bar>Hello</bar><baz>World</baz></foo>""" in portal())
+        self.assertTrue("""<script type="text/collective.jsconfiguration.xml" id="foo.dom.data">
+
+<foo><bar>Hello</bar><baz>World</baz></foo>
+
+</script>""" in portal())
 
     def test_configurtion_on_page(self):
         portal = self.layer['portal']
-        self.assertTrue("""<script type="text/collective.jsconfiguration.xml">
+        self.assertTrue("""<script type="text/collective.jsconfiguration.xml" id="foo.dom.data">
 
 <foo><bar>Hello</bar><baz>World</baz></foo>
 
@@ -104,17 +124,17 @@ class TestDOM(BaseTestCase):
                 provides=IDOMDataProvider,
                 name=u'foo.dom.data'
             )
-        self.assertTrue("""<script type="text/collective.jsconfiguration.xml">
+        self.assertTrue("""<script type="text/collective.jsconfiguration.xml" id="foo.dom.data">
 
 <foo><bar>Hello</bar><baz>World</baz></foo>
 
 </script>""" in portal())
-        self.assertFalse("""<script type="text/collective.jsconfiguration.xml">
+        self.assertFalse("""<script type="text/collective.jsconfiguration.xml" id="foo.dom.data">
 
 <foo><bar>Hello</bar><baz>World</baz></foo>
 
 </script>""" in portal.page())
-        self.assertTrue("""<script type="text/collective.jsconfiguration.xml">
+        self.assertTrue("""<script type="text/collective.jsconfiguration.xml" id="foo.dom.data">
 
 <foo><bar>Hello</bar><baz>Plone</baz></foo>
 
@@ -130,13 +150,33 @@ class TestDOM(BaseTestCase):
                 provides=IDOMDataProvider,
                 name=u'bar.dom.data'
             )
-        self.assertTrue("""<script type="text/collective.jsconfiguration.xml">
+        self.assertTrue("""<script type="text/collective.jsconfiguration.xml" id="foo.dom.data">
+
+<foo><bar>Hello</bar><baz>World</baz></foo>
+
+</script>""" in portal.page())
+        self.assertTrue("""<script type="text/collective.jsconfiguration.xml" id="bar.dom.data">
+
+<foo><bar>Hello</bar><baz>Plone</baz></foo>
+
+</script>""" in portal.page())
+
+    def test_unnamed(self):
+        portal = self.layer['portal']
+        provideAdapter(
+                DOMConfiguration,
+                (IATDocument,
+                 IHTTPRequest,
+                 Interface),
+                provides=IDOMDataProvider,
+            )
+        self.assertTrue("""<script type="text/collective.jsconfiguration.xml" id="foo.dom.data">
 
 <foo><bar>Hello</bar><baz>World</baz></foo>
 
 </script>""" in portal.page())
         self.assertTrue("""<script type="text/collective.jsconfiguration.xml">
 
-<foo><bar>Hello</bar><baz>Plone</baz></foo>
+<foo><bar>Hello</bar><baz>World</baz></foo>
 
 </script>""" in portal.page())

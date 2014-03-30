@@ -17,8 +17,8 @@ class JSConfigurationViewlet(ViewletBase):
         json_providers = getAdapters((self.context, self.request, self.view), IJSONDataProvider)
         results = []
         for name, provider in json_providers:
-            provider.name = name
-            results.append(json.dumps(provider()))
+            results.append({'name': name or None,
+                            'data': json.dumps(provider())})
         return results
 
     def dom_data(self):
@@ -26,5 +26,6 @@ class JSConfigurationViewlet(ViewletBase):
         dom_providers = getAdapters((self.context, self.request, self.view), IDOMDataProvider)
         results = []
         for name, provider in dom_providers:
-            results.append(provider())
+            results.append({'name': name or None,
+                            'data': provider()})
         return results

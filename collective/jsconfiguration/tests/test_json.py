@@ -19,19 +19,18 @@ class JSONConfiguration(object):
     implements(IJSONDataProvider)
     
     def __init__(self, context, request, view):
-        self.name = u''
         self.context = context
         self.request = request
         self.view = view
         
     def __call__(self):
-        return {'name' : self.name}
+        return {'foo' : 'Hello World'}
 
 
 class SpecialJSONConfiguration(JSONConfiguration):
 
     def __call__(self):
-        return {'name' : self.name.upper()}
+        return {'foo' : 'Hello Plone'}
 
 
 class TestJSON(BaseTestCase):
@@ -70,16 +69,32 @@ class TestJSON(BaseTestCase):
                                         IHTTPRequest,
                                         Interface),
                               name=u'bar.json.data')
+        gsm.unregisterAdapter(SpecialJSONConfiguration,
+                              required=(IATDocument,
+                                        IHTTPRequest,
+                                        Interface),
+                              name=u'foo.json.data')
+        gsm.unregisterAdapter(JSONConfiguration,
+                              required=(IATDocument,
+                                        IHTTPRequest,
+                                        Interface),
+                              name=u'bar.json.data')
+        gsm.unregisterAdapter(JSONConfiguration,
+                              required=(IATDocument,
+                                        IHTTPRequest,
+                                        Interface))
 
     def test_configurtion_on_portal(self):
         portal = self.layer['portal']
-        self.assertTrue("""<script type="text/collective.jsconfiguration.json">"""
-                        """{"name": "foo.json.data"}</script>""" in portal())
+        self.assertTrue("""<script type="text/collective.jsconfiguration.json" """
+                        """id="foo.json.data">"""
+                        """{"foo": "Hello World"}</script>""" in portal())
 
     def test_configurtion_on_page(self):
         portal = self.layer['portal']
-        self.assertTrue("""<script type="text/collective.jsconfiguration.json">"""
-                        """{"name": "foo.json.data"}</script>""" in portal.page())
+        self.assertTrue("""<script type="text/collective.jsconfiguration.json" """
+                        """id="foo.json.data">"""
+                        """{"foo": "Hello World"}</script>""" in portal.page())
 
     def test_override(self):
         portal = self.layer['portal']
@@ -91,12 +106,16 @@ class TestJSON(BaseTestCase):
                 provides=IJSONDataProvider,
                 name=u'foo.json.data'
             )
-        self.assertTrue("""<script type="text/collective.jsconfiguration.json">"""
-                        """{"name": "foo.json.data"}</script>""" in portal())
-        self.assertFalse("""<script type="text/collective.jsconfiguration.json">"""
-                        """{"name": "foo.json.data"}</script>""" in portal.page())
-        self.assertTrue("""<script type="text/collective.jsconfiguration.json">"""
-                        """{"name": "FOO.JSON.DATA"}</script>""" in portal.page())
+
+        self.assertTrue("""<script type="text/collective.jsconfiguration.json" """
+                        """id="foo.json.data">"""
+                        """{"foo": "Hello World"}</script>""" in portal())
+        self.assertFalse("""<script type="text/collective.jsconfiguration.json" """
+                        """id="foo.json.data">"""
+                        """{"foo": "Hello World"}</script>""" in portal.page())
+        self.assertTrue("""<script type="text/collective.jsconfiguration.json" """
+                        """id="foo.json.data">"""
+                        """{"foo": "Hello Plone"}</script>""" in portal.page())
 
     def test_multiple_registration(self):
         portal = self.layer['portal']
@@ -108,7 +127,24 @@ class TestJSON(BaseTestCase):
                 provides=IJSONDataProvider,
                 name=u'bar.json.data'
             )
+        self.assertTrue("""<script type="text/collective.jsconfiguration.json" """
+                        """id="foo.json.data">"""
+                        """{"foo": "Hello World"}</script>""" in portal.page())
+        self.assertTrue("""<script type="text/collective.jsconfiguration.json" """
+                        """id="bar.json.data">"""
+                        """{"foo": "Hello World"}</script>""" in portal.page())
+
+    def test_unnamed(self):
+        portal = self.layer['portal']
+        provideAdapter(
+                JSONConfiguration,
+                (IATDocument,
+                 IHTTPRequest,
+                 Interface),
+                provides=IJSONDataProvider,
+            )
+        self.assertTrue("""<script type="text/collective.jsconfiguration.json" """
+                        """id="foo.json.data">"""
+                        """{"foo": "Hello World"}</script>""" in portal.page())
         self.assertTrue("""<script type="text/collective.jsconfiguration.json">"""
-                        """{"name": "foo.json.data"}</script>""" in portal.page())
-        self.assertTrue("""<script type="text/collective.jsconfiguration.json">"""
-                        """{"name": "bar.json.data"}</script>""" in portal.page())
+                        """{"foo": "Hello World"}</script>""" in portal.page())

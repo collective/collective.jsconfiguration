@@ -11,7 +11,6 @@ class IJSConfigurationLayer(Interface):
 class IJSDataProvider(Interface):
     """Generic interface for a callable object able to provide JavaScript configuration data"""
 
-    name = Attribute("""Name of the provider (if any)""")
     context = Attribute("""The Plone context""")
     request = Attribute("""The Zope request""")
     view = Attribute("""The current view""")
