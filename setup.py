@@ -3,7 +3,7 @@ import os
 
 version = '0.1.0'
 
-tests_require = ['plone.app.testing', 'ftw.testbrowser']
+tests_require = ['plone.app.testing', ]
 
 setup(name='collective.jsconfiguration',
       version=version,
@@ -16,7 +16,7 @@ setup(name='collective.jsconfiguration',
         "Framework :: Plone",
         "Framework :: Plone :: 4.3",
         "Programming Language :: Python",
-        "Programming Language :: JavaScript",
+        "Intended Audience :: Developers",
         ],
       keywords='plone javascript configuration i18n',
       author='keul',
@@ -31,6 +31,7 @@ setup(name='collective.jsconfiguration',
       extras_require=dict(test=tests_require),
       install_requires=[
           'setuptools',
+          'Products.CMFPlone',
       ],
       entry_points="""
       [z3c.autoinclude.plugin]
