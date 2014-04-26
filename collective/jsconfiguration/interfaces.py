@@ -4,10 +4,6 @@ from zope.interface import Interface
 from zope.interface import Attribute
 
 
-class IJSConfigurationLayer(Interface):
-    """Marker interface for collective.jsconfiguration browser layer"""
-
-
 class IJSDataProvider(Interface):
     """Generic interface for a callable object able to provide JavaScript configuration data"""
 

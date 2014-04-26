@@ -9,12 +9,4 @@
 
   <include package=".browser" />
 
-  <genericsetup:registerProfile
-      name="default"
-      title="collective.jsconfiguration"
-      directory="profiles/default"
-      description="JavaScript configuration for Plone add-ons"
-      provides="Products.GenericSetup.interfaces.EXTENSION"
-      />
-
 </configure>

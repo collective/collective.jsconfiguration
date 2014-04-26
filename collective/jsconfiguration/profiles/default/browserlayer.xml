@@ -1,4 +1,0 @@
-<layers>
-    <layer name="collective.jsconfiguration"
-           interface="collective.jsconfiguration.interfaces.IJSConfigurationLayer" />
-</layers>

@@ -10,7 +10,6 @@
        class=".viewlet.JSConfigurationViewlet"
        template="viewlet.pt"
        permission="zope.Public"
-       layer="..interfaces.IJSConfigurationLayer"
        />
 
 </configure>
