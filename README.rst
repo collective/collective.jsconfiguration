@@ -7,7 +7,8 @@ This product is targeted to developer who need to distribute JavaScript configur
 i18n strings with their Plone products.
 
 Data injected in the page could be taken from whatever server side configuration setting you want
-(most of the time from Plone registry).
+but most of the time you want to read application configuration from the Plone registry and translations
+from page templates.
 
 How it works
 ============
@@ -16,7 +17,10 @@ A new viewlet will be registered in the HTML head of the site. This viewlet is n
 do nothing until a 3rd party product will register new ``IJSDataProvider`` adapters.
 
 There are three subtypes of adapters, choosing one of them depends on what you want to reach in your
-add-on. Registering *named adapters* is recommended, in that way override the registration will be possible.
+add-on.
+
+Registering *named adapters* is recommended, in that way override the registration with a more
+specific ones will be possible.
 In the case of ``IJSObjectDataProvider`` the name is required because it's used as name of the defined
 variable (see below).
 
@@ -36,6 +40,13 @@ For example:
             id="your_adapter_name_if_any">
         {"foo": ... }
     </script>
+
+It's not a duty of this package telling you how to read the data, but for example you could do something
+like this:
+
+.. code-block:: javascript
+
+    var configuration = $.parseJSON($('#your_adapter_name_if_any').text();
 
 IDOMDataProvider
 ----------------
@@ -65,6 +76,13 @@ you can then rely on Zope i18n support and tools like `i18ndude`__).
 
 __ http://pypi.python.org/pypi/i18ndude
 
+Reading the translation string from JavScript will be really simple:
+
+.. code-block:: javascript
+
+    var label1 = $($('#your_adapter_name_if_any').text()).attr('data-i18n-label1');
+    var label2 = $($('#your_adapter_name_if_any').text()).attr('data-i18n-label2');
+
 IJSObjectDataProvider
 ---------------------
 
@@ -82,15 +100,23 @@ If the name will be dotted, a nested JavaScript objects structure will be create
 
 An example for an adapter called "``foo.bar``":
 
-.. code-block:: javascript
+.. code-block:: html
 
     <script type="text/javascript">
     if (typeof foo==='undefined') {
         foo = {};
     }
     
-    foo.bar = {"foo": "Hello World"};
+    foo.bar = {"baz": "Hello World"};
     </script>
+
+While the use of ``IJSONDataProvider`` will not include new JavaScript data in the JavaScript global
+namespace but leave to developer the access to the new data, using ``IJSObjectDataProvider`` you are
+directly adding new data to the JavaScript environment:
+
+.. code-block:: javascript
+
+    alert(foo.bar.baz); // whil be "Hello World"
 
 Registering a new configuration
 ===============================
@@ -128,7 +154,7 @@ layers is registered (commonly: your add-on product is installed) and only when 
 As far as the adapter registration is using the same name of the first example, the last registration will
 override the first when applicable.
 
-Finally, there's the adapter class::
+Finally, there's the adapter class:
 
 .. code-block:: python
 
@@ -142,3 +168,35 @@ Finally, there's the adapter class::
             
         def __call__(self):
             ...
+
+When using ``IJSONDataProvider`` or ``IJSObjectDataProvider`` and you want to directly read data from the
+Plone registry, you can rely on `collective.regjsonify`__ package, that can quickly help you in this task:
+
+__ http://github.com/keul/collective.regjsonify
+
+Example application
+===================
+
+You can find all those features in action in the `collective.externalizelink`__ Plone add-on:
+
+.. code-block:: python
+
+    from collective.regjsonify.interfaces import IJSONifier
+    from collective.jsconfiguration.interfaces import IJSONDataProvider
+    from plone.registry.interfaces import IRegistry
+    from zope.interface import implements
+
+    class YourXMLAdapter(object):
+        implements(IJSONDataProvider)
+        
+        def __init__(self, context, request, view):
+            self.context = context
+            self.request = request
+            self.view = view
+            
+        def __call__(self):
+            registry = queryUtility(IRegistry)
+            settings = registry.forInterface(IMyRegistrySettings)
+            return IJSONifier(settings).json()
+
+__  https://github.com/keul/collective.externalizelink
