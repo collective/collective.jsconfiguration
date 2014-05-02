@@ -76,7 +76,7 @@ you can then rely on Zope i18n support and tools like `i18ndude`__).
 
 __ http://pypi.python.org/pypi/i18ndude
 
-Reading the translation string from JavScript will be really simple:
+Reading the translation string from JavaScript will be really simple:
 
 .. code-block:: javascript
 
@@ -172,13 +172,6 @@ Finally, there's the adapter class:
 When using ``IJSONDataProvider`` or ``IJSObjectDataProvider`` and you want to directly read data from the
 Plone registry, you can rely on `collective.regjsonify`__ package, that can quickly help you in this task:
 
-__ http://github.com/keul/collective.regjsonify
-
-Example application
-===================
-
-You can find all those features in action in the `collective.externalizelink`__ Plone add-on:
-
 .. code-block:: python
 
     from collective.regjsonify.interfaces import IJSONifier
@@ -198,5 +191,12 @@ You can find all those features in action in the `collective.externalizelink`__ 
             registry = queryUtility(IRegistry)
             settings = registry.forInterface(IMyRegistrySettings)
             return IJSONifier(settings).json()
+
+__ http://github.com/keul/collective.regjsonify
+
+Example application
+===================
+
+You can find all those features in action in the `collective.externalizelink`__ Plone add-on.
 
 __  https://github.com/keul/collective.externalizelink
