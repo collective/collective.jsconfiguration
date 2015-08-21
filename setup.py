@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os
 
-version = '0.1.1.dev0'
+version = '0.1.1'
 
 tests_require = ['plone.app.testing', ]
 
@@ -14,6 +14,7 @@ setup(name='collective.jsconfiguration',
       # http://pypi.python.org/pypi?:action=list_classifiers
       classifiers=[
         "Framework :: Plone",
+        "Framework :: Plone :: 4.2",
         "Framework :: Plone :: 4.3",
         "Programming Language :: Python",
         "Intended Audience :: Developers",

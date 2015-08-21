@@ -1,18 +1,13 @@
 # -*- coding: utf-8 -*-
 
 import unittest
-from collective.jsconfiguration.interfaces import IJSConfigurationLayer
 from collective.jsconfiguration.interfaces import IDOMDataProvider
 from collective.jsconfiguration.testing import JS_CONFIGURATION_INTEGRATION_TESTING
-from collective.jsconfiguration.tests.base import BaseTestCase
 from zope.interface import implements
 from zope.interface import Interface
-from zope.component import getMultiAdapter
-from zope.component import queryUtility
 from zope.component import provideAdapter
 from zope.component import getGlobalSiteManager
 from zope.publisher.interfaces.browser import IHTTPRequest
-from zope.publisher.browser import BrowserView
 from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile
 from Products.ATContentTypes.interfaces import IATDocument
 
@@ -40,7 +35,7 @@ class SpecialDOMConfiguration(DOMConfiguration):
         self.value2 = 'Plone'
 
 
-class TestDOM(BaseTestCase):
+class TestDOM(unittest.TestCase):
 
     layer = JS_CONFIGURATION_INTEGRATION_TESTING
 

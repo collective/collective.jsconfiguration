@@ -46,7 +46,7 @@ like this:
 
 .. code-block:: javascript
 
-    var configuration = $.parseJSON($('#your_adapter_name_if_any').text();
+    var configuration = $.parseJSON($('#your_adapter_name_if_any').text());
 
 IDOMDataProvider
 ----------------
