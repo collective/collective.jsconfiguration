@@ -8,7 +8,6 @@ from plone.app.testing import PLONE_FIXTURE
 from plone.app.testing import PloneSandboxLayer
 from plone.app.testing import IntegrationTesting
 from plone.app.testing import FunctionalTesting
-from plone.app.testing import applyProfile
 from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
 
@@ -26,7 +25,6 @@ class JSConfigurationLayer(PloneSandboxLayer):
         z2.installProduct(app, 'collective.jsconfiguration')
 
     def setUpPloneSite(self, portal):
-        applyProfile(portal, 'collective.jsconfiguration:default')
         #quickInstallProduct(portal, 'collective.jsconfiguration')
         setRoles(portal, TEST_USER_ID, ['Member', 'Manager'])
 
