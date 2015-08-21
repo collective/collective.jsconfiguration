@@ -9,7 +9,7 @@
         id=""
         tal:repeat="json_data view/json_data"
         tal:attributes="id python:json_data.get('name') or nothing"
-        tal:content="json_data/data"></script>
+        tal:content="structure json_data/data"></script>
 
 <tal:jsobject tal:repeat="js_data view/js_data"
               tal:replace="structure js_data"></tal:jsobject>
