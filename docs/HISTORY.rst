@@ -4,7 +4,8 @@ Changelog
 0.1.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fixed tests for Plone 4.2 compatibility
+  [keul]
 
 
 0.1.1 (2015-08-25)

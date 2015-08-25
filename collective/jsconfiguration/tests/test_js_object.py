@@ -73,6 +73,8 @@ class TestJSObject(unittest.TestCase):
 
     def test_configurtion_on_portal(self):
         portal = self.layer['portal']
+        request = self.layer['request']
+        request['ACTUAL_URL'] = 'http://plone'
         self.assertTrue("""<script type="text/javascript">
 if (typeof foo==='undefined') {
     foo = {};
@@ -84,6 +86,8 @@ foo.bar = {"foo": "Hello World"};
 
     def test_mono_name(self):
         portal = self.layer['portal']
+        request = self.layer['request']
+        request['ACTUAL_URL'] = 'http://plone'
         provideAdapter(
                 SpecialJSObjectConfiguration,
                 (Interface,
@@ -100,6 +104,8 @@ global_var = {"foo": "Hello Plone"};
 
     def test_configurtion_on_page(self):
         portal = self.layer['portal']
+        request = self.layer['request']
+        request['ACTUAL_URL'] = 'http://plone/page'
         self.assertTrue("""<script type="text/javascript">
 if (typeof foo==='undefined') {
     foo = {};
@@ -111,6 +117,8 @@ foo.bar = {"foo": "Hello World"};
 
     def test_override(self):
         portal = self.layer['portal']
+        request = self.layer['request']
+        request['ACTUAL_URL'] = 'http://plone'
         provideAdapter(
                 SpecialJSObjectConfiguration,
                 (IATDocument,
@@ -147,6 +155,8 @@ foo.bar = {"foo": "Hello Plone"};
 
     def test_multiple_registration(self):
         portal = self.layer['portal']
+        request = self.layer['request']
+        request['ACTUAL_URL'] = 'http://plone/page'
         provideAdapter(
                 SpecialJSObjectConfiguration,
                 (IATDocument,

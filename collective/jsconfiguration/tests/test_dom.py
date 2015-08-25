@@ -95,6 +95,8 @@ class TestDOM(unittest.TestCase):
 
     def test_configurtion_on_portal(self):
         portal = self.layer['portal']
+        request = self.layer['request']
+        request['ACTUAL_URL'] = 'http://plone'
         self.assertTrue("""<script type="text/collective.jsconfiguration.xml" id="foo.dom.data">
 
 <foo><bar>Hello</bar><baz>World</baz></foo>
@@ -103,6 +105,8 @@ class TestDOM(unittest.TestCase):
 
     def test_configurtion_on_page(self):
         portal = self.layer['portal']
+        request = self.layer['request']
+        request['ACTUAL_URL'] = 'http://plone/page'
         self.assertTrue("""<script type="text/collective.jsconfiguration.xml" id="foo.dom.data">
 
 <foo><bar>Hello</bar><baz>World</baz></foo>
@@ -111,6 +115,8 @@ class TestDOM(unittest.TestCase):
 
     def test_override(self):
         portal = self.layer['portal']
+        request = self.layer['request']
+        request['ACTUAL_URL'] = 'http://plone'
         provideAdapter(
                 SpecialDOMConfiguration,
                 (IATDocument,
@@ -137,6 +143,8 @@ class TestDOM(unittest.TestCase):
 
     def test_multiple_registration(self):
         portal = self.layer['portal']
+        request = self.layer['request']
+        request['ACTUAL_URL'] = 'http://plone/page'
         provideAdapter(
                 SpecialDOMConfiguration,
                 (IATDocument,
@@ -158,6 +166,8 @@ class TestDOM(unittest.TestCase):
 
     def test_unnamed(self):
         portal = self.layer['portal']
+        request = self.layer['request']
+        request['ACTUAL_URL'] = 'http://plone/page'
         provideAdapter(
                 DOMConfiguration,
                 (IATDocument,

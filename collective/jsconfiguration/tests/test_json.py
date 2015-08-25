@@ -82,18 +82,24 @@ class TestJSON(unittest.TestCase):
 
     def test_configurtion_on_portal(self):
         portal = self.layer['portal']
+        request = self.layer['request']
+        request['ACTUAL_URL'] = 'http://plone'
         self.assertTrue("""<script type="text/collective.jsconfiguration.json" """
                         """id="foo.json.data">"""
                         """{"foo": "Hello World"}</script>""" in portal())
 
     def test_configurtion_on_page(self):
         portal = self.layer['portal']
+        request = self.layer['request']
+        request['ACTUAL_URL'] = 'http://plone/page'
         self.assertTrue("""<script type="text/collective.jsconfiguration.json" """
                         """id="foo.json.data">"""
                         """{"foo": "Hello World"}</script>""" in portal.page())
 
     def test_override(self):
         portal = self.layer['portal']
+        request = self.layer['request']
+        request['ACTUAL_URL'] = 'http://plone'
         provideAdapter(
                 SpecialJSONConfiguration,
                 (IATDocument,
@@ -115,6 +121,8 @@ class TestJSON(unittest.TestCase):
 
     def test_multiple_registration(self):
         portal = self.layer['portal']
+        request = self.layer['request']
+        request['ACTUAL_URL'] = 'http://plone/page'
         provideAdapter(
                 JSONConfiguration,
                 (IATDocument,
@@ -132,6 +140,8 @@ class TestJSON(unittest.TestCase):
 
     def test_unnamed(self):
         portal = self.layer['portal']
+        request = self.layer['request']
+        request['ACTUAL_URL'] = 'http://plone/page'
         provideAdapter(
                 JSONConfiguration,
                 (IATDocument,
