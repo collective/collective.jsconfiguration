@@ -6,7 +6,7 @@ from zope.component import getAdapters
 from collective.jsconfiguration.interfaces import IJSONDataProvider
 from collective.jsconfiguration.interfaces import IJSObjectDataProvider
 from collective.jsconfiguration.interfaces import IDOMDataProvider
-from zope.component.interfaces import ComponentLookupError
+from zope.interface.interfaces import ComponentLookupError
 
 
 JS_SCRIPT = """<script type="text/javascript">
