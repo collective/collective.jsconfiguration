@@ -4,6 +4,7 @@ Changelog
 0.1.2 (unreleased)
 ------------------
 
+- Plone 6 compatibility [cekk]
 - Fixed tests for Plone 4.2 compatibility
   [keul]
 
